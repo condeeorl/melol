@@ -46,8 +46,13 @@ function sys_user_verify($userName, $userPassword){
                     . "From users"
                     . "WHERE userNick = '$userName'"
                     . "LIMIT 1");
+            if ($stmt = $conexion->prepare($querylog)) {
+                if (!$stmt->execute()) {
+                    die('Error de ejecución de la consulta. ' . $conexion->error);
+                }
+            $stmt->bind_result($userPass);
             #######
-            $dbPassword = password_hash("melol", PASSWORD_DEFAULT); # Saca el valor de la contraseña
+            $dbPassword = password_hash($userPass, PASSWORD_DEFAULT); # Saca el valor de la contraseña
             if (password_verify ($userPassword , $dbPassword )){ #Comprueba si la contraseña y el usuaio son correctos
                 return TRUE;
             }
