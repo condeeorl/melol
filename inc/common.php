@@ -41,16 +41,16 @@ function sys_user_verify($userName, $userPassword){
         if (!empty($userId)){ # Si el user id no esta vacio continuamos
             # read hashed password from database
             #######
-            require 'conexion.php';
+            require 'conexion.php'; ### usamos la conexion
             $querrylog=  mysql_db_query($config['dbName'], "SELECT userPass"
                     . "From users"
-                    . "WHERE userNick = '$userName'"
-                    . "LIMIT 1");
-            if ($stmt = $conexion->prepare($querylog)) {
-                if (!$stmt->execute()) {
-                    die('Error de ejecución de la consulta. ' . $conexion->error);
+                    . "WHERE userNick = '$userName' and userId = '1'"
+                    . "LIMIT 1"); ###Creamos la consulta
+            if ($stmt = $conexion->prepare($querylog)) { #Preparamos la consulta
+                if (!$stmt->execute()) { ##Ejecutamos la consulta
+                    die('Error de ejecución de la consulta. ' . $conexion->error); ## Si falla mata el proceso
                 }
-            $stmt->bind_result($userPass);
+            $stmt->bind_result($userPass); #Recogemos la variable
             #######
             $dbPassword = password_hash($userPass, PASSWORD_DEFAULT); # Saca el valor de la contraseña
             if (password_verify ($userPassword , $dbPassword )){ #Comprueba si la contraseña y el usuaio son correctos
