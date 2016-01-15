@@ -36,12 +36,19 @@ function sys_session_destroy(){
 }
 
 function sys_user_verify($userName, $userPassword){
-    if (!empty($userName) && !empty($userPassword)) {
-        $userId = sys_user_getId($userName);
-        if (!empty($userId)){
+    if (!empty($userName) && !empty($userPassword)) { #Si no esta vacio continua
+        $userId = sys_user_getId($userName); #Obtenemos el userID mediante otra funcion
+        if (!empty($userId)){ # Si el user id no esta vacio continuamos
             # read hashed password from database
-            $dbPassword = password_hash("melol", PASSWORD_DEFAULT);
-            if (password_verify ($userPassword , $dbPassword )){
+            #######
+            require 'conexion.php';
+            $querrylog=  mysql_db_query($config['dbName'], "SELECT userPass"
+                    . "From users"
+                    . "WHERE userNick = '$userName'"
+                    . "LIMIT 1");
+            #######
+            $dbPassword = password_hash("melol", PASSWORD_DEFAULT); # Saca el valor de la contraseña
+            if (password_verify ($userPassword , $dbPassword )){ #Comprueba si la contraseña y el usuaio son correctos
                 return TRUE;
             }
         }
