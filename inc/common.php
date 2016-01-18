@@ -65,6 +65,12 @@ function sys_user_getId($userName){
     $userId="";
     if (!empty($userName)) {
         # search user in DATABASE
+        require 'conexion.php';
+        querryGetId = mysql_db_query($config['dbName'], "SELECT 'id'"
+                . "FROM 'usuarios'"
+                . "WHERE 'nameuser' = $userName"
+                . "LIMIT 1")
+    }
         if ($userName == "melol"){
             #search Id in DATABASE
             $userId = "1" ;
